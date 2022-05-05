@@ -11,7 +11,7 @@ let lastDate;
 const parseRow = (row) => {
   const [date, time] = row.Time.split(', ');
   const duration = parseInt(row[leftKey], 10) + parseInt(row[rightKey], 10);
-  const feed = { [time]: duration };
+  const feed = { time, duration };
 
   if (date !== lastDate) {
     res.push([]);

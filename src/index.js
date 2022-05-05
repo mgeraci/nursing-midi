@@ -5,7 +5,18 @@ const csv = require('./csv');
 
 (async () => {
   const data = await csv();
-  console.log(data);
+  const maxFeedsPerDay = Math.max(
+    ...data.map((day) => day.length),
+  );
+  const feedDurations = [];
+  data.forEach((day) => {
+    day.forEach(({ duration }) => feedDurations.push(duration));
+  });
+
+  const minFeedDuration = Math.min(...feedDurations);
+  const maxFeedDuration = Math.max(...feedDurations);
+
+  console.log(maxFeedsPerDay, minFeedDuration, maxFeedDuration);
 })();
 
 const track1 = new MidiWriter.Track();
@@ -41,5 +52,5 @@ try {
 fs.writeFile(
   'output.midi',
   write.buildFile(),
-  (err) => console.log(err),
+  () => {},
 );
