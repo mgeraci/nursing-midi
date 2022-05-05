@@ -10,5 +10,5 @@ This project is written in node. Assuming you have `nvm` and `yarn`:
 1. Clone the repo
 1. Use the version of node specified in `.nvmrc` with `nvm`
 1. Install the JS packages it uses with `yarn install`
-1. TODO get CSV file
+1. Add the Baby Tracker data file to the project root as `data.csv`
 1. Generate the midi file with `yarn generate`
