@@ -1,0 +1,16 @@
+{
+  "name": "nursing-midi",
+  "version": "1.0.0",
+  "description": "A project to convert data from a baby's nursing frequency and duration to a midi file",
+  "main": "src/index.js",
+  "author": "Michael P. Geraci",
+  "license": "MIT",
+  "scripts": {
+    "generate": "node src/index.js"
+  },
+  "devDependencies": {
+    "eslint": "8.14.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.26.0"
+  }
+}
