@@ -14,6 +14,8 @@ const csv = require('./csv');
   const maxFeedDuration = Math.max(...feedDurations);
 
   console.log({ maxFeedsPerDay, minFeedDuration, maxFeedDuration });
+
+  const tracks = Array.from(Array(maxFeedsPerDay)).map(() => new MidiWriter.Track());
 })();
 
 const track1 = new MidiWriter.Track();
@@ -21,6 +23,8 @@ const track1 = new MidiWriter.Track();
 track1.addEvent([
   new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 100 }),
   new MidiWriter.NoteEvent({ pitch: ['C4'], duration: '2', velocity: 60 }),
+], () => ({ sequential: true }));
+track1.addEvent([
   new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 40 }),
   new MidiWriter.NoteEvent({ pitch: ['C4'], duration: '2', velocity: 20 }),
   new MidiWriter.NoteEvent({ pitch: ['C4', 'C4', 'C4', 'C4', 'D4', 'D4', 'D4', 'D4'], duration: '8', velocity: 10 }),
