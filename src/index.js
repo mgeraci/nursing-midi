@@ -1,6 +1,13 @@
 const MidiWriter = require('midi-writer-js');
 const fs = require('fs');
 
+const csv = require('./csv');
+
+(async () => {
+  const data = await csv();
+  console.log(data);
+})();
+
 const track1 = new MidiWriter.Track();
 
 track1.addEvent([

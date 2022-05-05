@@ -7,7 +7,6 @@
   "license": "MIT",
   "scripts": {
     "generate": "node src/index.js",
-    "test-csv": "node src/csv.js",
     "eslint": "eslint src"
   },
   "devDependencies": {
