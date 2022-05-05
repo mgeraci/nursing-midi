@@ -2,6 +2,7 @@ const MidiWriter = require('midi-writer-js');
 const fs = require('fs');
 
 const csv = require('./csv');
+const timeToPitch = require('./timeToPitch');
 
 (async () => {
   const data = await csv();
@@ -16,13 +17,15 @@ const csv = require('./csv');
   console.log({ maxFeedsPerDay, minFeedDuration, maxFeedDuration });
 
   const tracks = Array.from(Array(maxFeedsPerDay)).map(() => new MidiWriter.Track());
+
+  data.forEach((day) => console.log(timeToPitch(day[0].time)));
 })();
 
 const track1 = new MidiWriter.Track();
 
 track1.addEvent([
   new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 100 }),
-  new MidiWriter.NoteEvent({ pitch: ['C4'], duration: '2', velocity: 60 }),
+  new MidiWriter.NoteEvent({ pitch: ['C#4'], duration: '2', velocity: 60 }),
 ], () => ({ sequential: true }));
 track1.addEvent([
   new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 40 }),
