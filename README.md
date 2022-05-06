@@ -15,4 +15,4 @@ This project is written in node. Assuming you have `nvm` and `yarn`:
 1. Open the results: `output.midi`
 
 ## What does it sound like?
-Like [this](output.mp3)!
+Like [this](https://soundcloud.com/mgeraci-180667456/walter-nursing)!
