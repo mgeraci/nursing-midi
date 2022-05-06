@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const csv = require('./csv');
 const timeToPitch = require('./timeToPitch');
+const scale = require('./scale');
 
 (async () => {
   const days = await csv();
@@ -27,7 +28,13 @@ const timeToPitch = require('./timeToPitch');
           new MidiWriter.NoteEvent({
             pitch: timeToPitch(feed.time),
             duration: '4',
-            velocity: 100,
+            velocity: scale({
+              input: feed.duration,
+              inMin: minFeedDuration,
+              inMax: maxFeedDuration * 0.8,
+              outMin: 40,
+              outMax: 100,
+            }),
           }),
         ]);
       } else {
