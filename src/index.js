@@ -33,8 +33,8 @@ const tempo = 190;
             velocity: scale({
               input: feed.duration,
               inMin: minFeedDuration,
-              inMax: maxFeedDuration * 0.8,
-              outMin: 40,
+              inMax: maxFeedDuration * 0.7,
+              outMin: 45,
               outMax: 100,
             }),
           }),
