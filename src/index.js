@@ -5,11 +5,11 @@ const csv = require('./csv');
 const timeToPitch = require('./timeToPitch');
 
 (async () => {
-  const data = await csv();
+  const days = await csv();
   const maxFeedsPerDay = Math.max(
-    ...data.map((day) => day.length),
+    ...days.map((day) => day.length),
   );
-  const feedDurations = data
+  const feedDurations = days
     .reduce((acc, cur) => acc.concat(cur.map(({ duration }) => duration)), []);
   const minFeedDuration = Math.min(...feedDurations);
   const maxFeedDuration = Math.max(...feedDurations);
@@ -18,43 +18,39 @@ const timeToPitch = require('./timeToPitch');
 
   const tracks = Array.from(Array(maxFeedsPerDay)).map(() => new MidiWriter.Track());
 
-  data.forEach((day) => console.log(timeToPitch(day[0].time)));
+  days.forEach((day) => {
+    tracks.forEach((track, i) => {
+      const feed = day[i];
+
+      if (feed) {
+        track.addEvent([
+          new MidiWriter.NoteEvent({
+            pitch: timeToPitch(feed.time),
+            duration: '4',
+            velocity: 100,
+          }),
+        ]);
+      } else {
+        track.addEvent([
+          new MidiWriter.NoteEvent({
+            pitch: 'C0',
+            duration: '4',
+            velocity: 0,
+          }),
+        ]);
+      }
+    });
+  });
+
+  const write = new MidiWriter.Writer(tracks);
+
+  try {
+    fs.unlinkSync('output.midi');
+  } catch { /* noop */ }
+
+  fs.writeFile(
+    'output.midi',
+    write.buildFile(),
+    () => {},
+  );
 })();
-
-const track1 = new MidiWriter.Track();
-
-track1.addEvent([
-  new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 100 }),
-  new MidiWriter.NoteEvent({ pitch: ['C#4'], duration: '2', velocity: 60 }),
-], () => ({ sequential: true }));
-track1.addEvent([
-  new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 40 }),
-  new MidiWriter.NoteEvent({ pitch: ['C4'], duration: '2', velocity: 20 }),
-  new MidiWriter.NoteEvent({ pitch: ['C4', 'C4', 'C4', 'C4', 'D4', 'D4', 'D4', 'D4'], duration: '8', velocity: 10 }),
-  new MidiWriter.NoteEvent({ pitch: ['E4', 'D4'], duration: '4', velocity: 5 }),
-  new MidiWriter.NoteEvent({ pitch: ['C4'], duration: '2', velocity: 1 }),
-], () => ({ sequential: true }));
-
-const track2 = new MidiWriter.Track();
-
-track2.addEvent([
-  new MidiWriter.NoteEvent({ pitch: ['G4', 'F4'], duration: '4' }),
-  new MidiWriter.NoteEvent({ pitch: ['E4'], duration: '2' }),
-  new MidiWriter.NoteEvent({ pitch: ['G4', 'F4'], duration: '4' }),
-  new MidiWriter.NoteEvent({ pitch: ['E4'], duration: '2' }),
-  new MidiWriter.NoteEvent({ pitch: ['E4', 'E4', 'E4', 'E4', 'F4', 'F4', 'F4', 'F4'], duration: '8' }),
-  new MidiWriter.NoteEvent({ pitch: ['G4', 'F4'], duration: '4' }),
-  new MidiWriter.NoteEvent({ pitch: ['E4'], duration: '2' }),
-], () => ({ sequential: true }));
-
-const write = new MidiWriter.Writer([track1, track2]);
-
-try {
-  fs.unlinkSync('output.midi');
-} catch { /* noop */ }
-
-fs.writeFile(
-  'output.midi',
-  write.buildFile(),
-  () => {},
-);
