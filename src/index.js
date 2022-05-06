@@ -5,6 +5,8 @@ const csv = require('./csv');
 const timeToPitch = require('./timeToPitch');
 const scale = require('./scale');
 
+const tempo = 190;
+
 (async () => {
   const days = await csv();
   const maxFeedsPerDay = Math.max(
@@ -15,9 +17,9 @@ const scale = require('./scale');
   const minFeedDuration = Math.min(...feedDurations);
   const maxFeedDuration = Math.max(...feedDurations);
 
-  console.log({ maxFeedsPerDay, minFeedDuration, maxFeedDuration });
-
   const tracks = Array.from(Array(maxFeedsPerDay)).map(() => new MidiWriter.Track());
+
+  tracks.forEach((track) => track.setTempo(tempo));
 
   days.forEach((day) => {
     tracks.forEach((track, i) => {
